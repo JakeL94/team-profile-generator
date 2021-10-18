@@ -1,0 +1,27 @@
+{
+  "name": "team-profile-generator",
+  "version": "1.0.0",
+  "description": "A profile generator for employment teams.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "jest",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JakeL94/team-profile-generator2.git"
+  },
+  "author": "Jake Lee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JakeL94/team-profile-generator2/issues"
+  },
+  "homepage": "https://github.com/JakeL94/team-profile-generator2#readme",
+  "dependencies": {
+    "inquirer": "^8.2.0",
+    "jest": "^27.3.0"
+  }
+}
