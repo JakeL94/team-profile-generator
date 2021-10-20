@@ -13,7 +13,7 @@ let engineerInfo = {};
 
 const employee = [];
 
-const managerPrompt= [
+const managerData= [
     {
         type: 'input',
         name: 'name',
@@ -92,3 +92,243 @@ const managerPrompt= [
         } 
     },
 ]
+
+const internData = [
+    {
+        type: 'input',
+        name: 'name',
+        message: 'What is the full name of your intern?',
+        validate: nameField => {
+            if (nameField) {
+                return true;
+            } else {
+                console.log('This field cannot be blank.');
+                return false;
+            }
+        }
+    },
+    {
+        type: 'input',
+        name: 'id',
+        message: 'What is the id of your intern?',
+        validate: idField => {
+            if (idField) {
+                return true;
+            } else {
+                console.log('This field cannot be blank.');
+                return false;
+            }
+        } 
+    },
+    {
+        type: 'input',
+        name: 'email',
+        message: 'What is the email of your intern?',
+        validate: emailField => {
+            if (emailField) {
+                return true;
+            } else {
+                console.log('This field cannot be blank.');
+                return false;
+            }
+        } 
+    },
+    {
+        type: 'input',
+        name: 'school',
+        message: 'What is the school your intern attends?',
+        validate: schoolField => {
+            if (schoolField) {
+                return true;
+            } else {
+                console.log('This field cannot be blank.');
+                return false;
+            }
+        } 
+    },
+    {
+        type: 'confirm',
+        name: 'addEmployee',
+        message: 'Do you want to add another Employee',
+        when: ({ confirm }) => {
+            if (confirm) {
+                return true;
+            } else {
+                return false;
+            }
+        } 
+    },
+    {
+        type: 'list',
+        name: 'chooseEmployee',
+        message: 'Do you want to add another Employee',
+        choices: ['Engineer', 'Intern'],
+        when: ({ chooseEmployee }) => {
+            if (chooseEmployee) {
+                return true;
+            } else {
+                return false;
+            }
+        } 
+    },
+]
+
+const engineerData = [
+    {
+        type: 'input',
+        name: 'name',
+        message: 'What is the full name of your engineer?',
+        validate: nameField => {
+            if (nameField) {
+                return true;
+            } else {
+                console.log('This field cannot be blank.');
+                return false;
+            }
+        }
+    },
+    {
+        type: 'input',
+        name: 'id',
+        message: 'What is the id of your engineer?',
+        validate: idField => {
+            if (idField) {
+                return true;
+            } else {
+                console.log('This field cannot be blank.');
+                return false;
+            }
+        } 
+    },
+    {
+        type: 'input',
+        name: 'email',
+        message: 'What is the email of your engineer?',
+        validate: emailField => {
+            if (emailField) {
+                return true;
+            } else {
+                console.log('This field cannot be blank.');
+                return false;
+            }
+        } 
+    },
+    {
+        type: 'input',
+        name: 'github',
+        message: 'What is the github username of your engineer?',
+        validate: githubField => {
+            if (githubField) {
+                return true;
+            } else {
+                console.log('This field cannot be blank.');
+                return false;
+            }
+        } 
+    },
+    {
+        type: 'confirm',
+        name: 'addEmployee',
+        message: 'Do you want to add another Employee',
+        when: ({ confirm }) => {
+            if (confirm) {
+                return true;
+            } else {
+                return false;
+            }
+        } 
+    },
+    {
+        type: 'list',
+        name: 'chooseEmployee',
+        message: 'Do you want to add another Employee',
+        choices: ['Engineer', 'Intern'],
+        when: ({ chooseEmployee }) => {
+            if (chooseEmployee) {
+                return true;
+            } else {
+                return false;
+            }
+        } 
+    },
+]
+
+function internPrompt() {
+    return inquirer
+    .prompt(internData)
+    .then(response => {
+        internInfo = response;
+        const Intern = new intern(response.name, response.id, response.email, response.school);
+        employee.push(Intern);
+        console.log(Intern);
+
+        if (internInfo.addEmployee) {
+            if (internInfo.chooseEmployee,includes('Engineer')) {
+                engineerPrompt();
+                return
+            } else {
+                internPrompt();
+                return
+            }
+        } else {
+            fs.writeFile('./dist/index.html', createPage(employee), (err) => {
+                console.log('Team profile page generated!');
+                if (err) throw err
+            })
+        }
+    })
+}
+
+function engineerPrompt() {
+    return inquirer
+    .prompt(engineerData)
+    .then(response => {
+        engineerInfo = response;
+        const Engineer = new engineer(response.name, response.id, response.email, response.school);
+        employee.push(Engineer);
+        console.log(Engineer);
+
+        if (engineerInfo.addEmployee) {
+            if (engineerInfo.chooseEmployee,includes('Intern')) {
+                internPrompt();
+                return
+            } else {
+                engineerPrompt();
+                return
+            }
+        } else {
+            fs.writeFile('./dist/index.html', createPage(employee), (err) => {
+                console.log('Team profile page generated!');
+                if (err) throw err
+            })
+        }
+    })
+}
+
+function managerPrompt() {
+    return inquirer
+    .prompt(managerData)
+    .then(response => {
+        managerInfo = response;
+        const Manager = new manager(response.name, response.id, response.email, response.school);
+        employee.push(Manager);
+        console.log(Manager);
+
+        if (managerInfo.addEmployee) {
+            if (managerInfo.chooseEmployee,includes('Intern')) {
+                internPrompt();
+                return
+            } else {
+                engineerPrompt();
+                return
+            }
+        } else {
+            fs.writeFile('./dist/index.html', createPage(employee), (err) => {
+                console.log('Team profile page generated!');
+                if (err) throw err
+            })
+        }
+    })
+}
+
+managerPrompt();
