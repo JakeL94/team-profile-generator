@@ -1,3 +1,7 @@
+const engineer = require("../lib/engineer");
+// const manager = require("../lib/manager");
+const intern = require("../lib/intern");
+
 function roleType(data) {
     const cards={
         manager: [],
@@ -7,13 +11,13 @@ function roleType(data) {
     for (let i = 0; i < data.length; i++) {
         const role = data[i];
         switch (role.getRole()) {
-            case "Manager":
+            case "manager":
                 cards.manager.push(createManager(role))
                 break;
-            case "Engineer":
+            case "engineer":
                 cards.engineer.push(createEngineer(role))
                 break;
-            case "Intern":
+            case "intern":
                 cards.intern.push(createIntern(role))
                 break;
         }
@@ -39,37 +43,41 @@ function createManager(manager) {
   </div>`
 }
 
-const createEngineer = employee => `
-<div class="card col-4" style="width: 20rem;">
-    <div class="card-body">
-      <h5 class="card-title">${employee.name}</h5>
-      <div class="employee-position">
-        <span class="oi oi-code"></span>
-        ${employee.getRole()}
+function createEngineer(employee){
+  return `
+  <div class="card col-4" style="width: 20rem;">
+      <div class="card-body">
+        <h5 class="card-title">${employee.name}</h5>
+        <div class="employee-position">
+          <span class="oi oi-code"></span>
+          ${employee.getRole()}
+        </div>
       </div>
-    </div>
-    <ul class="list-group">
-      <li class="list-group-item">ID: ${employee.id}</li>
-      <li class="list-group-item">Email: <a href="${employee.email}">${employee.email}</a></li>
-      <li class="list-group-item">GitHub: <a href="https://www.github.com/${employee.gitHub}/">${employee.gitHub}</a></li>
-    </ul>
-</div>`
+      <ul class="list-group">
+        <li class="list-group-item">ID: ${employee.id}</li>
+        <li class="list-group-item">Email: <a href="${employee.email}">${employee.email}</a></li>
+        <li class="list-group-item">GitHub: <a href="https://www.github.com/${employee.gitHub}/">${employee.gitHub}</a></li>
+      </ul>
+  </div>`
+}
 
-const createIntern = employee => `
-<div class="card col-4" style="width: 20rem;">
-    <div class="card-body">
-      <h5 class="card-title">${employee.name}</h5>
-      <div class="employee-position">
-        <span class="oi oi-code"></span>
-        ${employee.getRole()}
+function createIntern(employee) {
+  return`
+  <div class="card col-4" style="width: 20rem;">
+      <div class="card-body">
+        <h5 class="card-title">${employee.name}</h5>
+        <div class="employee-position">
+          <span class="oi oi-code"></span>
+          ${employee.getRole()}
+        </div>
       </div>
-    </div>
-    <ul class="list-group">
-      <li class="list-group-item">ID: ${employee.id}</li>
-      <li class="list-group-item">Email: <a href="${employee.email}">${employee.email}</a></li>
-      <li class="list-group-item">School:${employee.school}</li>
-    </ul>
-</div>`
+      <ul class="list-group">
+        <li class="list-group-item">ID: ${employee.id}</li>
+        <li class="list-group-item">Email: <a href="${employee.email}">${employee.email}</a></li>
+        <li class="list-group-item">School:${employee.school}</li>
+      </ul>
+  </div>`
+}
 
 function createPage(data) {
     const cards = roleType(data)

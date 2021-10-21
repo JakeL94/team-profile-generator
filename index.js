@@ -69,9 +69,9 @@ const managerData= [
     {
         type: 'confirm',
         name: 'addEmployee',
-        message: 'Do you want to add another Employee',
-        when: ({ confirm }) => {
-            if (confirm) {
+        message: 'Do you want to add another Employee?',
+        when: ({ numberField }) => {
+            if (numberField) {
                 return true;
             } else {
                 return false;
@@ -83,8 +83,8 @@ const managerData= [
         name: 'chooseEmployee',
         message: 'Do you want to add another Employee',
         choices: ['Engineer', 'Intern'],
-        when: ({ chooseEmployee }) => {
-            if (chooseEmployee) {
+        when: ({ addEmployee }) => {
+            if (addEmployee) {
                 return true;
             } else {
                 return false;
@@ -150,8 +150,8 @@ const internData = [
         type: 'confirm',
         name: 'addEmployee',
         message: 'Do you want to add another Employee',
-        when: ({ confirm }) => {
-            if (confirm) {
+        when: ({ schoolField }) => {
+            if (schoolField) {
                 return true;
             } else {
                 return false;
@@ -163,8 +163,8 @@ const internData = [
         name: 'chooseEmployee',
         message: 'Do you want to add another Employee',
         choices: ['Engineer', 'Intern'],
-        when: ({ chooseEmployee }) => {
-            if (chooseEmployee) {
+        when: ({ addEmployee }) => {
+            if (addEmployee) {
                 return true;
             } else {
                 return false;
@@ -230,8 +230,8 @@ const engineerData = [
         type: 'confirm',
         name: 'addEmployee',
         message: 'Do you want to add another Employee',
-        when: ({ confirm }) => {
-            if (confirm) {
+        when: ({ githubField }) => {
+            if (githubField) {
                 return true;
             } else {
                 return false;
@@ -243,8 +243,8 @@ const engineerData = [
         name: 'chooseEmployee',
         message: 'Do you want to add another Employee',
         choices: ['Engineer', 'Intern'],
-        when: ({ chooseEmployee }) => {
-            if (chooseEmployee) {
+        when: ({ addEmployee }) => {
+            if (addEmployee) {
                 return true;
             } else {
                 return false;
@@ -262,20 +262,21 @@ function internPrompt() {
         employee.push(Intern);
         console.log(Intern);
 
-        if (internInfo.addEmployee) {
-            if (internInfo.chooseEmployee,includes('Engineer')) {
-                engineerPrompt();
-                return
-            } else {
-                internPrompt();
-                return
-            }
-        } else {
-            fs.writeFile('./dist/index.html', createPage(employee), (err) => {
-                console.log('Team profile page generated!');
-                if (err) throw err
-            })
-        }
+        // if (internInfo.addEmployee) {
+        //     if (internInfo.chooseEmployee,includes('Engineer')) {
+        //         engineerPrompt();
+        //         return
+        //     } else {
+        //         internPrompt();
+        //         return
+        //     }
+        // } else {
+        //     fs.writeFile('./dist/index.html', createPage(employee), (err) => {
+        //         console.log('Team profile page generated!');
+        //         if (err) throw err
+        //     })
+        // }
+        addTeam();
     })
 }
 
@@ -284,24 +285,25 @@ function engineerPrompt() {
     .prompt(engineerData)
     .then(response => {
         engineerInfo = response;
-        const Engineer = new engineer(response.name, response.id, response.email, response.school);
+        const Engineer = new engineer(response.name, response.id, response.email, response.github);
         employee.push(Engineer);
         console.log(Engineer);
 
-        if (engineerInfo.addEmployee) {
-            if (engineerInfo.chooseEmployee,includes('Intern')) {
-                internPrompt();
-                return
-            } else {
-                engineerPrompt();
-                return
-            }
-        } else {
-            fs.writeFile('./dist/index.html', createPage(employee), (err) => {
-                console.log('Team profile page generated!');
-                if (err) throw err
-            })
-        }
+        // if (engineerInfo.addEmployee) {
+        //     if (engineerInfo.chooseEmployee,includes('Intern')) {
+        //         internPrompt();
+        //         return
+        //     } else {
+        //         engineerPrompt();
+        //         return
+        //     }
+        // } else {
+        //     fs.writeFile('./dist/index.html', createPage(employee), (err) => {
+        //         console.log('Team profile page generated!');
+        //         if (err) throw err
+        //     })
+        // }
+        addTeam();
     })
 }
 
@@ -310,25 +312,74 @@ function managerPrompt() {
     .prompt(managerData)
     .then(response => {
         managerInfo = response;
-        const Manager = new manager(response.name, response.id, response.email, response.school);
+        const Manager = new manager(response.name, response.id, response.email, response.officeNumber);
         employee.push(Manager);
         console.log(Manager);
 
-        if (managerInfo.addEmployee) {
-            if (managerInfo.chooseEmployee,includes('Intern')) {
-                internPrompt();
-                return
-            } else {
-                engineerPrompt();
-                return
-            }
-        } else {
-            fs.writeFile('./dist/index.html', createPage(employee), (err) => {
-                console.log('Team profile page generated!');
-                if (err) throw err
-            })
-        }
+        addTeam();
+        // if (managerData.addEmployee) {
+        //     console.log("Hey")
+        //     if (managerData.chooseEmployee,includes('Intern')) {
+        //         internPrompt();
+        //         return
+        //     } else {
+        //         engineerPrompt();
+        //         return
+        //     }
+        // } else {
+        //     fs.writeFile('./dist/index.html', createPage(employee), (err) => {
+        //         console.log('Team profile page generated!');
+        //         if (err) throw err
+        //     })
+        //}
     })
+}
+
+function addTeam() {
+    inquirer.prompt([
+        {
+            type: "confirm",
+            name: "addEmployee",
+            message: "Would you like to add more team members?"
+        }
+    ])
+
+        .then(function (data) {
+
+            if(data.addEmployee) {
+                addEmployee();
+            } else {
+                fs.writeFile('./dist/index.html', createPage(employee), (err) => {
+                    console.log('Team profile page generated!');
+                    if (err) throw err
+                })
+            }
+        });
+}
+
+function addEmployee() {
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'chooseEmployee',
+            message: 'Do you want to add another Employee',
+            choices: ['Engineer', 'Intern']
+        }
+    ])
+
+        .then(function (data) {
+
+            switch (data.chooseEmployee) {
+                case "Engineer":
+                    engineerPrompt();
+                    
+                    break;
+                case 'Intern':
+                    internPrompt();
+                    
+                    break;
+            }
+        });
 }
 
 managerPrompt();
